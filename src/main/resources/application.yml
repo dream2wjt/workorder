@@ -1,13 +1,18 @@
 server:
   port: 8888
+#  servlet:
+#    # 项目前缀
+#    context-path: /swagger
 
-  #数据库信息
 spring:
+  #数据库信息
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://10.5.61.54:3306/workorder?serverTimezone=UTC&useSSL=false
     username: root
     password: qwe@123
+  #swagger信息
+
 mybatis:
     #开启驼峰命名法
     configuration:
@@ -20,3 +25,50 @@ mybatis-plus:
     configuration:
       # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+swagger:
+    enabled: true
+    # 项目标题
+    title: spring-boot-swagger
+    # 项目说明
+    description: 这是一个简单的 Swagger API 演示
+    # 版本号，自己定义
+    version: 1.0.0
+    contact:
+      # 自己的信息
+      name: jingtian.wang
+      email: drm2wjt@163.com
+    # swagger扫描的基础包，默认：全扫描
+    base-package: com.jing
+  # url: http://www.zhouzhaodong.xyz
+
+  # 需要处理的基础URL规则，默认：/**
+  # base-path:
+  # 需要排除的URL规则，默认：空
+  # exclude-path:
+  #    security:
+  #      # 是否启用 swagger 登录验证
+  #      filter-plugin: true
+  #      # 账号
+  #      username: jingtian.wang
+  #      # 密码
+  #      password: 123456
+    # 相关错误说明
+    global-response-message:
+        get:
+          [
+            {
+              code: 400,
+              message: 401get
+            },
+            {
+              code: 500,
+              message: 501get,
+              modelRef: ERROR
+            }
+          ]
+
+    ui-config:
+      json-editor: false
+      show-request-headers: true
+      request-timeout: 5000
+      submit-methods: get, delete
