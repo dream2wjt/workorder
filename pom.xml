@@ -57,11 +57,6 @@
 			<version>2.3.28</version>
 		</dependency>
 		<!-- 注入swagger依赖 -->
-<!--		<dependency>-->
-<!--			<groupId>com.battcn</groupId>-->
-<!--			<artifactId>swagger-spring-boot-starter</artifactId>-->
-<!--			<version>2.1.5-RELEASE</version>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>com.spring4all</groupId>
 			<artifactId>swagger-spring-boot-starter</artifactId>

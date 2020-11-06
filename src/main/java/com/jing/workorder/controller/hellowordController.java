@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api")
-@Api(tags = "用户管理")
+@Api(tags = "欢迎页面")
 public class hellowordController {
 
     @RequestMapping(value = "helloword", method = {RequestMethod.GET})
