@@ -6,7 +6,6 @@ package com.jing.workorder.auth.entity;
  * @time: 2020/11/19 16:32
  */
 
-import com.jing.workorder.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -49,9 +48,9 @@ public class JwtRealm extends AuthorizingRealm {
         }
 
         // 用户被锁定
-        if (user.getLocked()) {
-            throw new LockedAccountException("该用户已被锁定,暂时无法登录！");
-        }
+//        if (user.getLocked()) {
+//            throw new LockedAccountException("该用户已被锁定,暂时无法登录！");
+//        }
 
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, username, getName());
         return info;

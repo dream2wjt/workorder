@@ -1,6 +1,5 @@
 package com.jing.workorder.auth.entity;
 
-import com.jing.workorder.entity.User;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -9,7 +8,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,8 +32,8 @@ public class ShiroRealm extends AuthorizingRealm {
 
 
     static {
-        UserEntity user1 = new UserEntity(1L, "graython", "dd524c4c66076d1fa07e1fa1c94a91233772d132", "灰先生", false);
-        UserEntity user2 = new UserEntity(2L, "plum", "cce369436bbb9f0325689a3a6d5d6b9b8a3f39a0", "李先生", false);
+        User user1 = new User();
+        User user2 = new User();
 
         userMap.put("graython", user1);
         userMap.put("plum", user2);
@@ -81,9 +79,9 @@ public class ShiroRealm extends AuthorizingRealm {
         }
 
         // 用户被锁定
-        if (user.getLocked()) {
-            throw new LockedAccountException("该用户已被锁定,暂时无法登录！");
-        }
+//        if (user.getLocked()) {
+//            throw new LockedAccountException("该用户已被锁定,暂时无法登录！");
+//        }
 
         // 使用用户名作为盐值
         ByteSource credentialsSalt = ByteSource.Util.bytes(username);
@@ -95,7 +93,8 @@ public class ShiroRealm extends AuthorizingRealm {
          *  参数3. 盐值
          *  参数4. 当前 Realm 对象的名称，直接调用父类的 getName() 方法即可
          */
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), credentialsSalt,
+//        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), credentialsSalt,
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, "", credentialsSalt,
                 getName());
         return info;
     }
