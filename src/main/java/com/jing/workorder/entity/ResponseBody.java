@@ -1,4 +1,4 @@
-package com.jing.workorder.util;
+package com.jing.workorder.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

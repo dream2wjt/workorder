@@ -1,4 +1,4 @@
-package com.jing.workorder.util;
+package com.jing.workorder.utils;
 
 import java.util.UUID;
 
