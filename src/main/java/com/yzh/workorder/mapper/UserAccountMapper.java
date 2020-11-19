@@ -2,6 +2,7 @@ package com.yzh.workorder.mapper;
 
 import com.yzh.workorder.entity.UserAccount;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author jingtian.wang
  * @since 2020-11-19
  */
+@Mapper
 public interface UserAccountMapper extends BaseMapper<UserAccount> {
 
 }
