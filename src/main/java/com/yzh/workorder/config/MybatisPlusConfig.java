@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.jingtian.workorder.mapper")
+@MapperScan("com.yzh.workorder.mapper")
 public class MybatisPlusConfig {
     /**
      * 分页插件

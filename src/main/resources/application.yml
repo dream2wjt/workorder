@@ -8,9 +8,10 @@ spring:
   #数据库信息
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.5.61.54:3306/workorder?serverTimezone=UTC&useSSL=false
+    url: jdbc:mysql://localhost:3306/workorder?serverTimezone=UTC&useSSL=false
     username: root
-    password: qwe@123
+#    password: qwe@123
+    password: w111111
   #swagger信息
 
 mybatis:
@@ -21,7 +22,7 @@ mybatis-plus:
     # xml地址s
     mapper-locations: classpath:mapper/*Mapper.xml
     # 实体扫描，多个package用逗号或者分号分隔
-    type-aliases-package: com.example.demo.entity   #自己的实体类地址
+    type-aliases-package: com.yzh.workorder.entity   #自己的实体类地址
     configuration:
       # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

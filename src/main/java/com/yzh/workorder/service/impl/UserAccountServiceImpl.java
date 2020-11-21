@@ -24,4 +24,12 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
         IPage<UserAccount> userIPage = baseMapper.selectPage(page, wrapper);
         return userIPage;
     }
+
+    @Override
+    public Object findUser(String phoneNo) {
+        QueryWrapper<UserAccount> wrapper = new QueryWrapper<>();
+        wrapper.select("phoneNo").equals(phoneNo);
+        UserAccount user = baseMapper.selectOne(wrapper);
+        return user;
+    }
 }

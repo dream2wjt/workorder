@@ -15,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IUserAccountService extends IService<UserAccount> {
     Object findList(IPage<UserAccount> page);
 
+    Object findUser(String phoneNo);
 }

@@ -29,15 +29,9 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("用户实体")
-public class UserAccount implements Serializable {
+public class UserAccount extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键
-     */
-    @TableId("ID")
-    private Long id;
 
     /**
      * 姓名
@@ -100,7 +94,26 @@ public class UserAccount implements Serializable {
      */
     @TableField("PHONE_NO")
     private String phoneNo;
-
+    /**
+     * 上级负责人ID
+     */
+    @TableField("LEADER_ID")
+    private String leaderId;
+    /**
+     * 省份
+     */
+    @TableField("PROVINCE")
+    private String province;
+    /**
+     * 市
+     */
+    @TableField("CITY")
+    private String city;
+    /**
+     * 区/县
+     */
+    @TableField("DISTRICT")
+    private String district;
     /**
      * 邮箱
      */
@@ -124,7 +137,6 @@ public class UserAccount implements Serializable {
      */
     @TableField("SIGN_URL")
     private String signUrl;
-
     /**
      * 描述
      */
@@ -136,53 +148,10 @@ public class UserAccount implements Serializable {
      */
     @TableField("ROLE_ID")
     private Long roleId;
-    /**
-     * 是否有效（0:无效, 1:有效）
-     */
-    @TableField("ACTIVE")
-    private Boolean active;
-
-    /**
-     * 是否删除（0:未删除, 1:删除）
-     */
-    @TableField("DELETED")
-    private Boolean deleted;
 
     /**
      * 是否锁定（0:未锁定, 1:锁定）
      */
     @TableField("LOCKED")
     private Boolean locked;
-
-    /**
-     * 创建人ID
-     */
-    @TableField("CREATE_USER_ID")
-    private Long createUserId;
-
-    /**
-     * 创建时间
-     */
-    @TableField("CREATE_DATETIME")
-    private LocalDateTime createDatetime;
-
-    /**
-     * 修改人ID
-     */
-    @TableField("MODIFY_USER_ID")
-    private Long modifyUserId;
-
-    /**
-     * 修改时间
-     */
-    @TableField("MODIFY_DATETIME")
-    private LocalDateTime modifyDatetime;
-
-    /**
-     * 版本号
-     */
-    @TableField("VERSION")
-    private Integer version;
-
-
 }

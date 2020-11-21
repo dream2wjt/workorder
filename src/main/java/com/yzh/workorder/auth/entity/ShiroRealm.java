@@ -1,6 +1,7 @@
 package com.yzh.workorder.auth.entity;
 
 import com.yzh.workorder.entity.UserAccount;
+import com.yzh.workorder.service.IUserAccountService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -8,6 +9,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +28,9 @@ import java.util.Set;
  */
 @SuppressWarnings("serial")
 public class ShiroRealm extends AuthorizingRealm {
+
+    @Autowired
+    IUserAccountService userAccountService;
 
     public static Map<String, UserAccount> userMap = new HashMap<String, UserAccount>(16);
     public static Map<String, Set<String>> roleMap = new HashMap<String, Set<String>>(16);
@@ -70,9 +75,10 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         // 从 AuthenticationToken 中获取当前用户
-        String username = (String) token.getPrincipal();
+        String phoneNo = (String) token.getPrincipal();
         // 查询数据库获取用户信息，此处使用 Map 来模拟数据库
-        UserAccount user = userMap.get(username);
+//        UserAccount user = userMap.get(username);
+        UserAccount user = (UserAccount)userAccountService.findUser(phoneNo);
 
         // 用户不存在
         if (user == null) {
@@ -80,12 +86,12 @@ public class ShiroRealm extends AuthorizingRealm {
         }
 
         // 用户被锁定
-//        if (user.getLocked()) {
-//            throw new LockedAccountException("该用户已被锁定,暂时无法登录！");
-//        }
+        if (user.getLocked()) {
+            throw new LockedAccountException("该用户已被锁定,暂时无法登录！");
+        }
 
         // 使用用户名作为盐值
-        ByteSource credentialsSalt = ByteSource.Util.bytes(username);
+        ByteSource credentialsSalt = ByteSource.Util.bytes(phoneNo);
 
         /**
          * 将获取到的用户数据封装成 AuthenticationInfo 对象返回，此处封装为 SimpleAuthenticationInfo 对象。
@@ -94,8 +100,7 @@ public class ShiroRealm extends AuthorizingRealm {
          *  参数3. 盐值
          *  参数4. 当前 Realm 对象的名称，直接调用父类的 getName() 方法即可
          */
-//        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), credentialsSalt,
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, "", credentialsSalt,
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), credentialsSalt,
                 getName());
         return info;
     }
