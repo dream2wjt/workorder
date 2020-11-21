@@ -40,12 +40,6 @@ public class UserAccount implements Serializable {
     private Long id;
 
     /**
-     * 用户账户唯一ID
-     */
-    @TableField("ACCOUNT_ID")
-    private Long accountId;
-
-    /**
      * 姓名
      */
     @TableField("NAME")
@@ -54,6 +48,11 @@ public class UserAccount implements Serializable {
     @TableField("NICK_NAME")
     private String nickName;
 
+    /**
+     * 密码
+     */
+    @TableField("PASSWOED")
+    private String password;
     /**
      * 小程序唯一ID
      */
@@ -132,6 +131,11 @@ public class UserAccount implements Serializable {
     @TableField("DESCRIPTION")
     private String description;
 
+    /**
+     * 用户角色ID
+     */
+    @TableField("ROLE_ID")
+    private Long roleId;
     /**
      * 是否有效（0:无效, 1:有效）
      */

@@ -85,14 +85,8 @@ CREATE TABLE `role` (
   `ID` bigint(20) NOT NULL COMMENT '主键',
   `NAME` varchar(100) NOT NULL COMMENT '角色名称',
   `DESCRIPTION` varchar(255) DEFAULT '' COMMENT '角色描述',
-  `TENANT_ID` bigint(20) NOT NULL COMMENT '租户主键',
-  `READ_ONLY` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否只读（1：是；0：否）',
-  `IS_PUBLIC` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否公共角色（1：是；0：否）',
-  `ROLE_TYPE` tinyint(1) DEFAULT NULL COMMENT '角色类型（0:平台级，1:系统级，2:业务级，3:租户级）',
-  `CODE` tinyint(1) DEFAULT NULL COMMENT '内置角色编码（0:平台管理员，1:租户管理员，2:平台普通用户）',
-  `APP_ID` bigint(20) DEFAULT NULL COMMENT '应用主键',
-  `HAS_FULL_PERMISSION` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否拥有应用的全部权限（1：是；0：否）',
   `ACTIVE` tinyint(1) DEFAULT '1' COMMENT '是否有效（0:无效, 1:有效）',
+  `PERMISSION_CODE` varchar(255) DEFAULT '' COMMENT '权限',
   `DELETED` tinyint(1) DEFAULT '0' COMMENT '是否删除（0:未删除, 1:删除）',
   `CREATE_USER_ID` bigint(20) DEFAULT NULL COMMENT '创建人ID',
   `CREATE_DATETIME` datetime DEFAULT NULL COMMENT '创建时间',
@@ -102,49 +96,6 @@ CREATE TABLE `role` (
   PRIMARY KEY (`ID`),
   KEY `ID` (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色';
-
--- ----------------------------
--- Table structure for permission
--- ----------------------------
-DROP TABLE IF EXISTS `permission`;
-CREATE TABLE `permission` (
-  `ID` bigint(20) NOT NULL COMMENT '主键',
-  `NAME` varchar(100) NOT NULL COMMENT '权限名称',
-  `CODE` varchar(50) DEFAULT '' COMMENT '权限编码',
-  `URL` varchar(255) DEFAULT '' COMMENT '权限路由',
-  `DESCRIPTION` varchar(255) DEFAULT '' COMMENT '权限描述',
-  `ICO` varchar(100) DEFAULT '' COMMENT '图标',
-  `PARENT_ID` bigint(20) DEFAULT NULL COMMENT '权限父节点主键',
-  `APP_CLIENT_ID` bigint(20) NOT NULL COMMENT '应用客户端主键',
-  `ACTIVE` tinyint(1) DEFAULT '1' COMMENT '是否有效（0:无效, 1:有效）',
-  `DELETED` tinyint(1) DEFAULT '0' COMMENT '是否删除（0:未删除, 1:删除）',
-  `CREATE_USER_ID` bigint(20) DEFAULT NULL COMMENT '创建人ID',
-  `CREATE_DATETIME` datetime DEFAULT NULL COMMENT '创建时间',
-  `MODIFY_USER_ID` bigint(20) DEFAULT NULL COMMENT '修改人ID',
-  `MODIFY_DATETIME` datetime DEFAULT NULL COMMENT '修改时间',
-  `VERSION` int(11) DEFAULT '1' COMMENT '版本号',
-  PRIMARY KEY (`ID`),
-  KEY `ID` (`ID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限';
-
--- ----------------------------
--- Table structure for role_permission
--- ----------------------------
-DROP TABLE IF EXISTS `role_permission`;
-CREATE TABLE `role_permission` (
-  `ID` bigint(20) NOT NULL COMMENT '主键',
-  `ROLE_ID` bigint(20) NOT NULL COMMENT '角色主键',
-  `PERMISSION_ID` bigint(20) NOT NULL COMMENT '权限主键',
-  `ACTIVE` tinyint(1) DEFAULT '1' COMMENT '是否有效（0:无效, 1:有效）',
-  `DELETED` tinyint(1) DEFAULT '0' COMMENT '是否删除（0:未删除, 1:删除）',
-  `CREATE_USER_ID` bigint(20) DEFAULT NULL COMMENT '创建人ID',
-  `CREATE_DATETIME` datetime DEFAULT NULL COMMENT '创建时间',
-  `MODIFY_USER_ID` bigint(20) DEFAULT NULL COMMENT '修改人ID',
-  `MODIFY_DATETIME` datetime DEFAULT NULL COMMENT '修改时间',
-  `VERSION` int(11) DEFAULT '1' COMMENT '版本号',
-  PRIMARY KEY (`ID`),
-  KEY `ID` (`ID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色权限';
 
 -- ----------------------------
 -- Table structure for address_country
@@ -232,46 +183,28 @@ CREATE TABLE `address_district` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='行政区';
 
 -- ----------------------------
--- Table structure for user_role
--- ----------------------------
-DROP TABLE IF EXISTS `user_role`;
-CREATE TABLE `user_role` (
-  `ID` bigint(20) NOT NULL COMMENT '主键',
-  `ACCOUNT_ID` bigint(20) NOT NULL COMMENT '用户主键',
-  `ROLE_ID` bigint(20) NOT NULL COMMENT '角色主键',
-  `ACTIVE` tinyint(1) DEFAULT '1' COMMENT '是否有效（0:无效, 1:有效）',
-  `DELETED` tinyint(1) DEFAULT '0' COMMENT '是否删除（0:未删除, 1:删除）',
-  `CREATE_USER_ID` bigint(20) DEFAULT NULL COMMENT '创建人ID',
-  `CREATE_DATETIME` datetime DEFAULT NULL COMMENT '创建时间',
-  `MODIFY_USER_ID` bigint(20) DEFAULT NULL COMMENT '修改人ID',
-  `MODIFY_DATETIME` datetime DEFAULT NULL COMMENT '修改时间',
-  `VERSION` int(11) DEFAULT '1' COMMENT '版本号',
-  PRIMARY KEY (`ID`),
-  KEY `ID` (`ID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色';
-
--- ----------------------------
 -- Table structure for user_account
 -- ----------------------------
 DROP TABLE IF EXISTS `user_account`;
 CREATE TABLE `user_account` (
-  `ID` bigint(20) NOT NULL COMMENT '主键',
-  `ACCOUNT_ID` bigint(20) NOT NULL COMMENT '用户账户唯一ID',
+  `ID` varchar(100) NOT NULL COMMENT '主键',
   `NAME` varchar(100) NOT NULL DEFAULT '' COMMENT '姓名',
   `NICK_NAME` varchar(100) DEFAULT NULL,
+  `PASSWORD` varchar(100) NOT NULL DEFAULT '' COMMENT '密码',
   `APPLET_ID` varchar(100) NOT NULL DEFAULT '' COMMENT '小程序唯一ID',
   `WECHAT_OPENID` varchar(100) NOT NULL DEFAULT '' COMMENT '微信账户OpenID',
   `GENDER` varchar(2) NOT NULL DEFAULT 'O' COMMENT '性别（F:女, M:男, O:其他）',
   `BIRTHDAY` varchar(20) DEFAULT NULL COMMENT '出生日期',
   `PASSPORT_NO` varchar(100) DEFAULT NULL COMMENT '护照号',
-  `IDCARD_NO` varchar(50) DEFAULT NULL COMMENT '身份证号',
+  `IDCARD_NO` varchar(50) NOT NULL DEFAULT '' COMMENT '身份证号',
   `BANK_CARD_NO` varchar(50) DEFAULT NULL COMMENT '银行卡号',
-  `PHONE_NO` varchar(50) DEFAULT NULL COMMENT '电话',
+  `PHONE_NO` varchar(50) NOT NULL DEFAULT '' COMMENT '电话',
   `EMAIL` varchar(100) DEFAULT NULL COMMENT '邮箱',
   `ADDRESS` varchar(50) DEFAULT NULL COMMENT '联系方式',
   `HEAD_URL` varchar(800) DEFAULT NULL COMMENT '头像图片地址',
   `SIGN_URL` varchar(255) DEFAULT NULL COMMENT '签名图片地址',
   `DESCRIPTION` varchar(500) DEFAULT NULL COMMENT '描述',
+  `ROLE_ID` bigint(20) NOT NULL DEFAULT '4110810677579425317' COMMENT '用户角色ID',
   `ACTIVE` tinyint(1) DEFAULT '1' COMMENT '是否有效（0:无效, 1:有效）',
   `DELETED` tinyint(1) DEFAULT '0' COMMENT '是否删除（0:未删除, 1:删除）',
   `LOCKED` tinyint(1) DEFAULT '0' COMMENT '是否锁定（0:未锁定, 1:锁定）',
@@ -282,6 +215,7 @@ CREATE TABLE `user_account` (
   `VERSION` int(11) DEFAULT '1' COMMENT '版本号',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='系统用户账号表';
+INSERT INTO  `user_account` (`ID`, `NAME`, `NICK_NAME`, `PASSWORD`, `APPLET_ID`, `WECHAT_OPENID`, `GENDER`, `BIRTHDAY`, `PASSPORT_NO`, `IDCARD_NO`, `BANK_CARD_NO`, `PHONE_NO`, `EMAIL`, `ADDRESS`, `HEAD_URL`, `SIGN_URL`, `DESCRIPTION`, `ROLE_ID`,`ACTIVE`, `DELETED`, `LOCKED`, `CREATE_USER_ID`, `CREATE_DATETIME`, `MODIFY_USER_ID`, `MODIFY_DATETIME`, `VERSION`) VALUES ('cd74f9b0bb1e46908cbfe39a8c9e8ef9',  '景甜', '', '123@yzh', '', '', 'M', '1988-02-20', '4110810677579425317', '421125198802207015', '622202185645821482', '13100678595', '365171291@qq.com', '', '', '', '', '4110810677579425317', '1', '0', '0', NULL, NULL, NULL, NULL, '1');
 
 -- ----------------------------
 -- Table structure for org_department
@@ -304,7 +238,6 @@ CREATE TABLE `org_department` (
   `VERSION` int(11) DEFAULT '1' COMMENT '版本号',
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='部门表 包含科室等级别，可当作用户组';
-
 -- ----------------------------
 -- Table structure for user_org_department
 -- ----------------------------

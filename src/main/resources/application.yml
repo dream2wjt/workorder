@@ -44,7 +44,7 @@ swagger:
       name: jingtian.wang
       email: drm2wjt@163.com
     # swagger扫描的基础包，默认：全扫描
-    base-package: com.jing
+    base-package: com.yzh
   # url: http://www.zhouzhaodong.xyz
 
   # 需要处理的基础URL规则，默认：/**
