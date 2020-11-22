@@ -45,7 +45,7 @@ public class UserAccount extends BaseEntity implements Serializable {
     /**
      * 密码
      */
-    @TableField("PASSWOED")
+    @TableField("PASSWORD")
     private String password;
     /**
      * 小程序唯一ID

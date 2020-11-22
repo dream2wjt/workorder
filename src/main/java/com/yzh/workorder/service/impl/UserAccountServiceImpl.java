@@ -26,9 +26,9 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
     }
 
     @Override
-    public Object findUser(String phoneNo) {
+    public Object findUserByPhoneNo(String phoneNo) {
         QueryWrapper<UserAccount> wrapper = new QueryWrapper<>();
-        wrapper.select("phoneNo").equals(phoneNo);
+        wrapper.eq("PHONE_NO", phoneNo);
         UserAccount user = baseMapper.selectOne(wrapper);
         return user;
     }

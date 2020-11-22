@@ -78,7 +78,7 @@ public class ShiroRealm extends AuthorizingRealm {
         String phoneNo = (String) token.getPrincipal();
         // 查询数据库获取用户信息，此处使用 Map 来模拟数据库
 //        UserAccount user = userMap.get(username);
-        UserAccount user = (UserAccount)userAccountService.findUser(phoneNo);
+        UserAccount user = (UserAccount)userAccountService.findUserByPhoneNo(phoneNo);
 
         // 用户不存在
         if (user == null) {

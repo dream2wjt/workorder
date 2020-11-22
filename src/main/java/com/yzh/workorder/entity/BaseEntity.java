@@ -28,7 +28,7 @@ public class BaseEntity {
      * 主键
      */
     @TableId("ID")
-    private Long id;
+    private String id;
     /**
      * 是否有效（0:无效, 1:有效）
      */
