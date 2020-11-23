@@ -2,19 +2,15 @@ package com.yzh.workorder.auth.entity;
 
 import com.yzh.workorder.entity.UserAccount;
 import com.yzh.workorder.service.IUserAccountService;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @description: ShiroRealm
@@ -32,36 +28,36 @@ public class ShiroRealm extends AuthorizingRealm {
     @Autowired
     IUserAccountService userAccountService;
 
-    public static Map<String, UserAccount> userMap = new HashMap<String, UserAccount>(16);
-    public static Map<String, Set<String>> roleMap = new HashMap<String, Set<String>>(16);
-    public static Map<String, Set<String>> permMap = new HashMap<String, Set<String>>(16);
-
-
-    static {
-        UserAccount user1 = new UserAccount();
-        UserAccount user2 = new UserAccount();
-
-        userMap.put("graython", user1);
-        userMap.put("plum", user2);
-
-        roleMap.put("graython", new HashSet<String>() {
-            {
-                add("admin");
-
-            }
-        });
-
-        roleMap.put("plum", new HashSet<String>() {
-            {
-                add("guest");
-            }
-        });
-        permMap.put("plum", new HashSet<String>() {
-            {
-                add("article:read");
-            }
-        });
-    }
+//    public static Map<String, UserAccount> userMap = new HashMap<String, UserAccount>(16);
+//    public static Map<String, Set<String>> roleMap = new HashMap<String, Set<String>>(16);
+//    public static Map<String, Set<String>> permMap = new HashMap<String, Set<String>>(16);
+//
+//
+//    static {
+//        UserAccount user1 = new UserAccount();
+//        UserAccount user2 = new UserAccount();
+//
+//        userMap.put("graython", user1);
+//        userMap.put("plum", user2);
+//
+//        roleMap.put("graython", new HashSet<String>() {
+//            {
+//                add("admin");
+//
+//            }
+//        });
+//
+//        roleMap.put("plum", new HashSet<String>() {
+//            {
+//                add("guest");
+//            }
+//        });
+//        permMap.put("plum", new HashSet<String>() {
+//            {
+//                add("article:read");
+//            }
+//        });
+//    }
     /**
      * 限定这个 Realm 只处理 UsernamePasswordToken
      */
@@ -100,7 +96,8 @@ public class ShiroRealm extends AuthorizingRealm {
          *  参数3. 盐值
          *  参数4. 当前 Realm 对象的名称，直接调用父类的 getName() 方法即可
          */
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), credentialsSalt,
+        String password = new SimpleHash("MD5", user.getPassword(), user.getPhoneNo(), 16).toString();
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, credentialsSalt,
                 getName());
         return info;
     }
@@ -111,16 +108,16 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         // 获取当前用户
-        UserAccount currentUser = (UserAccount) SecurityUtils.getSubject().getPrincipal();
-        // UserEntity currentUser = (UserEntity)principals.getPrimaryPrincipal();
-        // 查询数据库，获取用户的角色信息
-        Set<String> roles = roleMap.get(currentUser.getName());
-        // 查询数据库，获取用户的权限信息
-        Set<String> perms = permMap.get(currentUser.getName());
+//        UserAccount currentUser = (UserAccount) SecurityUtils.getSubject().getPrincipal();
+//        // UserEntity currentUser = (UserEntity)principals.getPrimaryPrincipal();
+//        // 查询数据库，获取用户的角色信息
+//        Set<String> roles = roleMap.get(currentUser.getName());
+//        // 查询数据库，获取用户的权限信息
+//        Set<String> perms = permMap.get(currentUser.getName());
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setRoles(roles);
-        info.setStringPermissions(perms);
+//        info.setRoles(roles);
+//        info.setStringPermissions(perms);
         return info;
     }
 }

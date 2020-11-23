@@ -2,10 +2,7 @@ package com.yzh.workorder.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -13,7 +10,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel("接口返回实体类")
+@ApiModel("接口返回实体")
 public class ResponseBody<T> implements Serializable {
     private static final long serialVersionUID = -8987146499044811408L;
     /**

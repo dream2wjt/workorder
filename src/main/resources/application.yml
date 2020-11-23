@@ -10,8 +10,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/workorder?serverTimezone=UTC&useSSL=false
     username: root
-#    password: qwe@123
-    password: w111111
+    password: qwe@123
+#    password: w111111
   #swagger信息
 
 mybatis:

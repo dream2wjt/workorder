@@ -7,12 +7,14 @@ package com.yzh.workorder.auth.entity;
  */
 
 import com.yzh.workorder.entity.UserAccount;
+import com.yzh.workorder.service.IUserAccountService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
@@ -20,6 +22,9 @@ import java.util.Set;
  * JwtRealm 只负责校验 JwtToken
  */
 public class JwtRealm extends AuthorizingRealm {
+
+    @Autowired
+    IUserAccountService userAccountService;
     /**
      * 限定这个 Realm 只处理我们自定义的 JwtToken
      */
@@ -41,7 +46,7 @@ public class JwtRealm extends AuthorizingRealm {
         // 从 JwtToken 中获取当前用户
         String username = jwtToken.getPrincipal().toString();
         // 查询数据库获取用户信息，此处使用 Map 来模拟数据库
-        UserAccount user = ShiroRealm.userMap.get(username);
+        UserAccount user = (UserAccount)userAccountService.findUserByPhoneNo(username);
 
         // 用户不存在
         if (user == null) {
@@ -49,9 +54,9 @@ public class JwtRealm extends AuthorizingRealm {
         }
 
         // 用户被锁定
-//        if (user.getLocked()) {
-//            throw new LockedAccountException("该用户已被锁定,暂时无法登录！");
-//        }
+        if (user.getLocked()) {
+            throw new LockedAccountException("该用户已被锁定,暂时无法登录！");
+        }
 
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, username, getName());
         return info;
@@ -60,15 +65,15 @@ public class JwtRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         // 获取当前用户
-        UserAccount currentUser = (UserAccount) SecurityUtils.getSubject().getPrincipal();
-        // UserEntity currentUser = (UserEntity) principals.getPrimaryPrincipal();
-        // 查询数据库，获取用户的角色信息
-        Set<String> roles = ShiroRealm.roleMap.get(currentUser.getName());
-        // 查询数据库，获取用户的权限信息
-        Set<String> perms = ShiroRealm.permMap.get(currentUser.getName());
+//        UserAccount currentUser = (UserAccount) SecurityUtils.getSubject().getPrincipal();
+//        // UserEntity currentUser = (UserEntity) principals.getPrimaryPrincipal();
+//        // 查询数据库，获取用户的角色信息
+//        Set<String> roles = ShiroRealm.roleMap.get(currentUser.getName());
+//        // 查询数据库，获取用户的权限信息
+//        Set<String> perms = ShiroRealm.permMap.get(currentUser.getName());
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setRoles(roles);
-        info.setStringPermissions(perms);
+//        info.setRoles(roles);
+//        info.setStringPermissions(perms);
         return info;
     }
 }

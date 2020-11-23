@@ -1,9 +1,4 @@
 package com.yzh.workorder.entity;
-
-import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.TableField;
 
 import java.io.Serializable;

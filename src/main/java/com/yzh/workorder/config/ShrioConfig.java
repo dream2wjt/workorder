@@ -151,7 +151,7 @@ public class ShrioConfig {
     ShiroRealm shiroRealm() {
         ShiroRealm shiroRealm = new ShiroRealm();
         // 设置加密算法
-        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher("SHA-1");
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher("MD5");
         // 设置加密次数
         credentialsMatcher.setHashIterations(16);
         shiroRealm.setCredentialsMatcher(credentialsMatcher);

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @Api(tags = "登录管理")
 public class LoginController {
     @PostMapping(value = "/login")
-    public Object userLogin(@RequestParam(name = "phoneNo", required = true) String phoneNo,
+    public ResponseBody userLogin(@RequestParam(name = "phoneNo", required = true) String phoneNo,
                             @RequestParam(name = "password", required = true) String password, ServletResponse response) {
 
         // 获取当前用户主体
@@ -36,8 +36,6 @@ public class LoginController {
             loginSuccess = true;
         } catch (UnknownAccountException uae) { // 账号不存在
             msg = "用户名与密码不匹配，请检查后重新输入！";
-        } catch (IncorrectCredentialsException ice) { // 账号与密码不匹配
-            msg = "用户名与密码不匹配，请检查后重新输入！";
         } catch (LockedAccountException lae) { // 账号已被锁定
             msg = "该账户已被锁定，如需解锁请联系管理员！";
         } catch (AuthenticationException ae) { // 其他身份验证异常
@@ -49,19 +47,18 @@ public class LoginController {
             String jwtToken = JwtUtils.sign(phoneNo, JwtUtils.SECRET);
             // 将签发的 JWT token 设置到 HttpServletResponse 的 Header 中
             ((HttpServletResponse) response).setHeader(JwtUtils.AUTH_HEADER, jwtToken);
-            //
-            return ResponseBody.builder().code(200).message(msg);
+
+            return ResponseBody.builder().code(200).message(msg).data(jwtToken).build();
 
         } else {
-            return ResponseBody.builder().code(401).message(msg);
-
+            return ResponseBody.builder().code(401).message(msg).data("").build();
         }
 
     }
 
     @GetMapping("/logout")
-    public Object logout() {
-        return ResponseBody.builder().code(200).message("退出登录");
+    public ResponseBody logout() {
+        return ResponseBody.builder().code(200).message("退出登录").build();
 
     }
 }
